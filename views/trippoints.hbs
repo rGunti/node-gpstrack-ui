@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <h2><small><a href="{{ROOT_DIR}}/trip" title="Back">&laquo;</a></small> {{data.tripName}}</h2>
+    <table class="table table-striped table-hover points-table" style="width:100%"
+           data-trip-id="{{data.trip.tripID}}">
+        <thead>
+        <tr>
+            <th style="">Latitude</th>
+            <th style="">Longitude</th>
+            <th style="">Altitude</th>
+            <th style="">Speed (GPS)</th>
+            <th style="">Speed (OBD)</th>
+            <th style="">Fuel Consumption</th>
+            <th style="">Created</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<script src="{{ROOT_DIR}}/public/js/trippoints.js"></script>

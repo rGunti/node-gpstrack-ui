@@ -1,6 +1,12 @@
 app:
   fullName: GPS TrackUI
   instance: default
+database:
+  host: data.ge.rgunti.ch
+  port: 3306
+  dbName: carpi-rec
+  username: carpi-rec
+  password: carpi-rec
 server:
   port: 2030
   showTraces: true

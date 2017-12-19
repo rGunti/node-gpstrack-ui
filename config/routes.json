@@ -1,3 +1,5 @@
 {
-  "/routes/index": "/"
+  "/routes/index": "/",
+  "/routes/trip": "/trip",
+  "/routes/ajax/trip": "/ajax/trip"
 }

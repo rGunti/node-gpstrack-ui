@@ -28,6 +28,7 @@
     "moment": "^2.20.0",
     "moment-duration-format": "^2.0.1",
     "morgan": "^1.9.0",
+    "mysql2": "^1.5.1",
     "sequelize": "^4.28.6",
     "sequelize-datatables": "^1.2.1",
     "supports-color": "^5.1.0"
