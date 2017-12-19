@@ -61,4 +61,11 @@ $(document).ready(function() {
             [ 5, 'asc' ]
         ]
     });
+
+    $.ajax('/ajax/trip/' + tripID + '/distance')
+        .done(function(d) {
+            $('.trip-distance')
+                .removeClass('fa fa-spin fa-refresh')
+                .text((Math.round(d.data * 1000) / 1000) + ' km')
+        });
 });

@@ -22,6 +22,7 @@
     "express-hbs": "^1.0.4",
     "filesize": "^3.5.11",
     "font-awesome": "^4.7.0",
+    "gps-distance": "0.0.4",
     "handlebars-helpers": "^0.10.0",
     "jquery": "^3.2.1",
     "js-yaml": "^3.10.0",

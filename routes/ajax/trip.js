@@ -13,12 +13,15 @@ const logger = require('../../utils/debuglogger')(__filename);
 const config = require('config');
 const ApiHelpers = require('../../utils/api-helpers');
 const datatable = require(`sequelize-datatables`);
+const gpsDistance = require('gps-distance');
+const async = require('async');
 
 const Trip = require('../../db/models/Trip');
 const VTripPoint = require('../../db/models/VTripPoint');
 
 const router = require('express').Router();
 
+/** DataTables endpoint for list of trips */
 router.get('/', (req, res, next) => {
     datatable(Trip, req.query, {})
         .then((result) => {
@@ -26,24 +29,48 @@ router.get('/', (req, res, next) => {
         });
 });
 
+/** Get single trip by ID */
 router.get('/:tripID', (req, res, next) => {
     let tripID = req.params.tripID;
     Trip.findById(tripID)
         .then((trip) => {
             if (trip) ApiHelpers.sendData(res, trip.toJSON());
-            else ApiHelpers.sendNotFoundRespnse(res, tripID);
+            else ApiHelpers.sendNotFoundResponse(res, tripID);
         })
         .catch((err) => {
             ApiHelpers.sendErrorResponse(res, err, tripID);
         });
 });
 
+/** DataTables endpoint for a list of trip points */
 router.get('/:tripID/points', (req, res, next) => {
     let tripID = req.params.tripID;
     datatable(VTripPoint, req.query, { where: { tripID: tripID } })
         .then((result) => {
             res.json(result);
         });
+});
+
+/** Returns the distance of a trip by calculating the distance between all points [in km] */
+router.get('/:tripID/distance', (req, res, next) => {
+    let tripID = req.params.tripID;
+    VTripPoint.findAll({
+        where: { tripID: tripID }
+    }).then((points) => {
+        //if (!trip) return ApiHelpers.sendNotFoundResponse(res, tripID);
+        let latLonArray = [];
+        async.eachSeries(points,
+            (i, callback) => {
+                latLonArray.push([i.latitude, i.longitude]);
+                callback();
+            },
+            (err) => {
+                ApiHelpers.sendData(res, gpsDistance(latLonArray));
+            }
+        );
+    }).catch((err) => {
+        ApiHelpers.sendErrorResponse(res, err, tripID);
+    });
 });
 
 module.exports = router;

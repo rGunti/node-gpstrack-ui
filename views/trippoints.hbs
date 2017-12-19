@@ -1,5 +1,18 @@
 <div class="container-fluid">
-    <h2><small><a href="{{ROOT_DIR}}/trip" title="Back">&laquo;</a></small> {{data.tripName}}</h2>
+    <h2>
+        <a class="btn btn-outline-primary" href="{{ROOT_DIR}}/trip" title="Back">&laquo;</a>
+        {{data.tripName}}
+    </h2>
+    <div class="container-fluid">
+        <dl class="row">
+            <dt class="col-3">Created at</dt>
+            <dd class="col-9">{{data.trip.createdAt}}</dd>
+            <dt class="col-3">Updated at</dt>
+            <dd class="col-9">{{data.trip.updatedAt}}</dd>
+            <dt class="col-3">Distance</dt>
+            <dd class="col-9"><span class="trip-distance fa fa-spin fa-refresh"></span></dd>
+        </dl>
+    </div>
     <table class="table table-striped table-hover points-table" style="width:100%"
            data-trip-id="{{data.trip.tripID}}">
         <thead>

@@ -26,7 +26,7 @@ const ApiHelpers = {
         res.status(err.status || 500);
         res.json(ApiHelpers.getDTO(data, err));
     },
-    sendNotFoundRespnse: (res, data) => {
+    sendNotFoundResponse: (res, data) => {
         res.status(404);
         res.json(ApiHelpers.getDTO(data, true));
     }
