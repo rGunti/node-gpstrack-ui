@@ -9,6 +9,14 @@
  *
  */
 
+function renderCoordinateLink(text, type, point) {
+    var l = $('<a>');
+    l.attr('href', 'http://www.google.com/maps/place/' + point.latitude + ',' + point.longitude);
+    l.attr('target', '_blank');
+    l.text(text);
+    return $('<div>').append(l).html();
+}
+
 var tripID = null;
 
 $(document).ready(function() {
@@ -19,8 +27,8 @@ $(document).ready(function() {
         responsive: true,
         ajax: '/ajax/trip/' + tripID + '/points',
         columns: [
-            { data: 'latitude', class: 'text-right' },
-            { data: 'longitude', class: 'text-right' },
+            { data: 'latitude', class: 'text-right', render: renderCoordinateLink },
+            { data: 'longitude', class: 'text-right', render: renderCoordinateLink },
             { data: 'altitude', class: 'text-right', render: function(d, t, r) {
                 return d + ' m'
                 } },
@@ -30,13 +38,24 @@ $(document).ready(function() {
             { data: 'vehicleSpeed', class: 'text-right', render: function(d, t, r) {
                     return (d) ? d + ' km/h' : '-'
                 } },
-            { data: 'fuelConsumption', class: 'text-right', render: function(d, t, r) {
+            { data: 'fuelConsumption', class: 'text-right', render: function (d, t, r) {
+                return (d) ? (Math.round(d * 100) / 100) + ' l/h' : '-'
+                }
+                /*, render: function(d, t, r) {
                     let lph = (d) ? Math.round(d * 100) / 100 : null;
                     let lpk = (lph) ? ((r.gpsSpeed && r.gpsSpeed > 0) ? Math.round((lph / 100 * r.gpsSpeed) * 100) / 100 : null) : null;
 
-                    return (lph ? (lph + ' l/h') + (lpk ? '<br><small>' + lpk + ' l/100km</small>' : '') : '-');
-                } },
-            { data: 'createdAt' }
+                    if (lph && lpk) {
+                        return $('<div>').append($('<abbr>').attr('title', lpk + ' l/100km').text(lph + ' l/h')).html();
+                    } else if (lph) {
+                        return lph + ' l/h';
+                    } else {
+                        return '-';
+                    }
+                }*/ },
+            { data: 'createdAt', render: function(d, t, r) {
+                return moment(d, moment.ISO_8601).format('ll LTS')
+            } }
         ],
         order: [
             [ 5, 'asc' ]
