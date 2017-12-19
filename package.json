@@ -7,5 +7,28 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Raphael \"rGunti\" Guntersweiler <raphael@rgunti.ch>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.6.0",
+    "body-parser": "^1.18.2",
+    "config": "^1.28.1",
+    "cookie-parser": "^1.4.3",
+    "datatables.net": "^1.10.16",
+    "datatables.net-bs4": "^1.10.16",
+    "datatables.net-responsive": "^2.2.1",
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "express-hbs": "^1.0.4",
+    "filesize": "^3.5.11",
+    "font-awesome": "^4.7.0",
+    "handlebars-helpers": "^0.10.0",
+    "jquery": "^3.2.1",
+    "js-yaml": "^3.10.0",
+    "moment": "^2.20.0",
+    "moment-duration-format": "^2.0.1",
+    "morgan": "^1.9.0",
+    "sequelize": "^4.28.6",
+    "sequelize-datatables": "^1.2.1",
+    "supports-color": "^5.1.0"
+  }
 }
