@@ -1,0 +1,21 @@
+app:
+  fullName: GPS TrackUI
+  instance: default
+server:
+  port: 2030
+  showTraces: true
+  enableDebugRoutes: true
+logging:
+  logBase: 'GPSTrackUI'
+  logToStdout: 'debug,info,warn'
+  showTimestamp: true
+  timestampFormat: 'Y-MM-DD HH:mm:ss.SSS'
+internals:
+  dirs:
+    views: /views
+    hbs:
+      partials: /views/partials
+      layouts: /views/layouts
+      defaultLayout: /views/layouts/main.hbs
+    routes: /config/routes.json
+    staticRoutes: /config/static-routes.json

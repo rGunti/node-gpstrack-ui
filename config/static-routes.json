@@ -1,0 +1,12 @@
+{
+  "/public": "/public",
+  "/node_modules/font-awesome": "/public",
+  "/node_modules/jquery/dist": "/public/js",
+  "/node_modules/bootstrap/dist": "/public",
+  "/node_modules/moment/min": "/public/js",
+  "/node_modules/moment-duration-format/lib": "/public/js",
+  "/node_modules/datatables.net/js": "/public/js",
+  "/node_modules/datatables.net-responsive/js": "/public/js",
+  "/node_modules/datatables.net-bs4/css": "/public/css",
+  "/node_modules/datatables.net-bs4/js": "/public/js"
+}
