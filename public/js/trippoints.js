@@ -25,6 +25,8 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         responsive: true,
+        filter: false,
+        dom: '<i<t>p>',
         ajax: '/ajax/trip/' + tripID + '/points',
         columns: [
             { data: 'latitude', class: 'text-right', render: renderCoordinateLink },
