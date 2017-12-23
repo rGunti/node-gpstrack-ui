@@ -62,7 +62,8 @@ router.get('/:tripID/distance', (req, res, next) => {
         async.eachSeries(points,
             (i, callback) => {
                 latLonArray.push([i.latitude, i.longitude]);
-                callback();
+                // To ensure that the callstack doesn't overflow
+                async.setImmediate(callback);
             },
             (err) => {
                 ApiHelpers.sendData(res, gpsDistance(latLonArray));
