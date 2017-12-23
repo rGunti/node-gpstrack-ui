@@ -67,5 +67,14 @@ $(document).ready(function() {
             $('.trip-distance')
                 .removeClass('fa fa-spin fa-refresh')
                 .text((Math.round(d.data * 1000) / 1000) + ' km')
+        })
+        .fail(function() {
+            var err = $('<span>').addClass('fa fa-fw fa-exclamation-triangle');
+            var errText = $('<span>').text('Failed to calculate distance');
+            $('.trip-distance')
+                .removeClass('fa fa-spin fa-refresh')
+                .addClass('text-danger')
+                .append(err)
+                .append(errText);
         });
 });
