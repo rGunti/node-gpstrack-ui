@@ -58,7 +58,7 @@ $(document).ready(function() {
             } }
         ],
         order: [
-            [ 5, 'asc' ]
+            [ 6, 'asc' ]
         ]
     });
 
