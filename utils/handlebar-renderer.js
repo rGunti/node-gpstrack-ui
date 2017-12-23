@@ -11,12 +11,12 @@
 const HandlebarHelpers = require('./handlebar-helpers');
 
 const HandlebarRenderer = {
-    render: (res, view, title, data) => {
+    render: (res, view, title, data, callback) => {
         res.render(view, {
             title: title,
             utils: HandlebarHelpers,
             data: data
-        });
+        }, callback);
     }
 };
 module.exports = HandlebarRenderer;

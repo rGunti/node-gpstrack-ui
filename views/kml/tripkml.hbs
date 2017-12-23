@@ -1,0 +1,32 @@
+{{!< empty}}
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
+        <name>{{data.tripName}}</name>
+        <description>Node-generated KML file</description>
+        <Style id="yellowLineGreenPoly">
+            <LineStyle>
+                <color>7f00ffff</color>
+                <width>4</width>
+            </LineStyle>
+            <PolyStyle>
+                <color>7f00ff00</color>
+            </PolyStyle>
+        </Style>
+        <Placemark>
+            <name>{{data.trip.tripID}} {{data.trip.tripName}}</name>
+            <description>{{data.tripDistance}}</description>
+            <styleUrl>#yellowLineGreenPoly</styleUrl>
+            <LineString>
+                <extrude>1</extrude>
+                <tessellate>1</tessellate>
+                <altitudeMode>clampToGround</altitudeMode>
+                <coordinates><![CDATA[
+{{#each data.points}}{{this.longitude}},{{this.latitude}},{{this.altitude}}
+{{/each}}
+                ]]>
+                </coordinates>
+            </LineString>
+        </Placemark>
+    </Document>
+</kml>

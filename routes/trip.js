@@ -13,8 +13,30 @@ const logger = require('../utils/debuglogger')(__filename);
 const config = require('config');
 const HandleRender = require('../utils/handlebar-renderer');
 const Trip = require('../db/models/Trip');
+const VTripPoint = require('../db/models/VTripPoint');
 
 const router = require('express').Router();
+
+const getTrip = (res, tripID, successCb, missingCb) => {
+    Trip.findById(tripID)
+        .then((trip) => {
+            if (trip) {
+                successCb(trip);
+            } else if (missingCb) {
+                missingCb(tripID);
+            } else {
+                res.status(404);
+                HandleRender.render(res, 'err/404', 'Trip not found');
+            }
+        });
+};
+const getTripPoints = (tripID, successCb) => {
+    VTripPoint.findAll({
+        where: { tripID: tripID }
+    }).then((points) => {
+        successCb(points);
+    });
+};
 
 router.get('/', (req, res, next) => {
     logger.debug(`Requested from ${req.ip}`);
@@ -23,19 +45,34 @@ router.get('/', (req, res, next) => {
 
 router.get('/:tripID/points', (req, res, next) => {
     let tripID = req.params.tripID;
-    Trip.findById(tripID)
-        .then((trip) => {
-            if (trip) {
-                let tripName = trip.tripName || `Trip ${trip.tripID}`;
-                HandleRender.render(res, 'trippoints', tripName, {
-                    trip: trip,
-                    tripName: tripName
-                });
-            } else {
-                res.status(404);
-                HandleRender.render(res, 'err/404', 'Trip not found');
-            }
+    getTrip(res, req.params.tripID, (trip) => {
+        let tripName = trip.tripName || `Trip ${trip.tripID}`;
+        HandleRender.render(res, 'trippoints', tripName, {
+            trip: trip,
+            tripName: tripName
         });
+    });
+});
+
+router.get('/:tripID/download', (req, res, next) => {
+    let tripID = req.params.tripID;
+    getTrip(res, tripID, (trip) => {
+        getTripPoints(tripID, (points) => {
+            let tripName = trip.tripName || `Trip ${trip.tripID}`;
+            HandleRender.render(res, 'kml/tripkml', null, {
+                trip: trip,
+                points: points,
+                tripName: tripName
+            }, (err, out) => {
+                res.set({
+                    'Content-Type': 'application/vnd.google-earth.kml+xml',
+                    'Content-Length': out.length,
+                    'Content-Disposition': 'attachment; filename="' + tripName + '.kml"'
+                });
+                res.send(out);
+            });
+        });
+    });
 });
 
 module.exports = router;
