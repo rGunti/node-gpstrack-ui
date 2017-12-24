@@ -8,5 +8,6 @@
   "/node_modules/datatables.net/js": "/public/js",
   "/node_modules/datatables.net-responsive/js": "/public/js",
   "/node_modules/datatables.net-bs4/css": "/public/css",
-  "/node_modules/datatables.net-bs4/js": "/public/js"
+  "/node_modules/datatables.net-bs4/js": "/public/js",
+  "/node_modules/fusioncharts": "/public/js"
 }

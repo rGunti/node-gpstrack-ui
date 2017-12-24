@@ -75,5 +75,16 @@ router.get('/:tripID/download', (req, res, next) => {
     });
 });
 
+router.get('/:tripID/points/graph', (req, res, next) => {
+    let tripID = req.params.tripID;
+    getTrip(res, req.params.tripID, (trip) => {
+        let tripName = trip.tripName || `Trip ${trip.tripID}`;
+        HandleRender.render(res, 'trippoints-graph', tripName, {
+            trip: trip,
+            tripName: tripName
+        });
+    });
+});
+
 module.exports = router;
 
