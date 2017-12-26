@@ -55,6 +55,7 @@ router.get('/:tripID/points', (req, res, next) => {
 /** DataTables endpoint for a list of trip points */
 router.get('/:tripID/points/graph', (req, res, next) => {
     let tripID = req.params.tripID;
+    let showFuelEco = !(!req.query.eco);
     VTripPoint.findAll({
         where: { tripID: tripID }
     }).then((points) => {
@@ -64,10 +65,11 @@ router.get('/:tripID/points/graph', (req, res, next) => {
                 xAxisName: "Time",
                 pYAxisName: "Speed",
                 sYAxisName: "Fuel Consumption",
+                sYAxisMaxValue: 30,
                 compactDataMode: true,
                 dataSeparator: "|",
                 numberSuffix: " km/h",
-                snumberSuffix: " l/h",
+                snumberSuffix: showFuelEco ? " l/100km" : " l/h",
                 showvalues: false,
                 animation: true
             },
@@ -79,11 +81,15 @@ router.get('/:tripID/points/graph', (req, res, next) => {
         let categoryArray = [];
         let speedDataSet = [];
         let fuelDataSet = [];
+        let fuelEcoDataSet = [];
         async.eachSeries(points,
             (i, callback) => {
-                categoryArray.push(i.createdAt);
-                speedDataSet.push(i.gpsSpeed * 3.6 || i.vehicleSpeed || 0);
+                categoryArray.push(moment(i.createdAt).format('YYYY-MM-DD HH:mm:ss'));
+                let speed = i.gpsSpeed * 3.6 || i.vehicleSpeed || 0;
+                speedDataSet.push(speed);
                 fuelDataSet.push(i.fuelConsumption);
+                if (speed < 1) fuelEcoDataSet.push(null);
+                else fuelEcoDataSet.push(Math.min(i.fuelConsumption / speed * 100, 30));
                 async.setImmediate(callback);
             },
             (err) => {
@@ -92,11 +98,19 @@ router.get('/:tripID/points/graph', (req, res, next) => {
                     seriesName: 'Speed',
                     data: speedDataSet.join('|')
                 });
-                graphOutput.dataset.push({
-                    seriesName: 'Fuel Consumption',
-                    data: fuelDataSet.join('|'),
-                    parentYAxis: "S"
-                });
+                if (showFuelEco) {
+                    graphOutput.dataset.push({
+                        seriesName: 'Fuel Economy',
+                        data: fuelEcoDataSet.join('|'),
+                        parentYAxis: "S"
+                    });
+                } else {
+                    graphOutput.dataset.push({
+                        seriesName: 'Fuel Consumption',
+                        data: fuelDataSet.join('|'),
+                        parentYAxis: "S"
+                    });
+                }
                 res.json(graphOutput);
             });
     }).catch((err) => {

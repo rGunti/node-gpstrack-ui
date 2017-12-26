@@ -15,7 +15,8 @@ const HandlebarRenderer = {
         res.render(view, {
             title: title,
             utils: HandlebarHelpers,
-            data: data
+            data: data,
+            request: res.req
         }, callback);
     }
 };
