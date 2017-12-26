@@ -20,6 +20,8 @@ const moment = require('moment');
 const Trip = require('../../db/models/Trip');
 const VTripPoint = require('../../db/models/VTripPoint');
 
+const tripDistanceCache = {};
+
 const router = require('express').Router();
 
 /** DataTables endpoint for list of trips */
@@ -121,6 +123,10 @@ router.get('/:tripID/points/graph', (req, res, next) => {
 /** Returns the distance of a trip by calculating the distance between all points [in km] */
 router.get('/:tripID/distance', (req, res, next) => {
     let tripID = req.params.tripID;
+    if (tripID in tripDistanceCache) {
+        return ApiHelpers.sendData(res, tripDistanceCache[tripID]);
+    }
+
     VTripPoint.findAll({
         where: { tripID: tripID }
     }).then((points) => {
@@ -133,7 +139,8 @@ router.get('/:tripID/distance', (req, res, next) => {
                 async.setImmediate(callback);
             },
             (err) => {
-                ApiHelpers.sendData(res, gpsDistance(latLonArray));
+                tripDistanceCache[tripID] = gpsDistance(latLonArray);
+                ApiHelpers.sendData(res, tripDistanceCache[tripID]);
             }
         );
     }).catch((err) => {
