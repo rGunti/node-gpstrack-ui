@@ -18,6 +18,14 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right"
                      aria-labelledby="tripPointActionButton">
+                    <a class="dropdown-item"
+                       data-toggle="modal"
+                       data-target="#renameTripModal"
+                       href="#renameTripModal">
+                        <span class="fa fa-fw fa-pencil"></span>
+                        Rename Trip
+                    </a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="./download">
                         <span class="fa fa-fw fa-globe"></span>
                         Download as KML
@@ -57,3 +65,45 @@
     </table>
 </div>
 <script src="{{ROOT_DIR}}/public/js/trippoints.js"></script>
+
+<!-- Modal "Edit Trip Name" -->
+<div class="modal fade"
+     id="renameTripModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="renameTripModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="renameTripModalLabel">Rename trip</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="/trip/{{data.trip.tripID}}/rename">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="tripNameInput">Trip Name</label>
+                        <input type="text"
+                               class="form-control"
+                               id="tripNameInput"
+                               name="tripName"
+                               placeholder="Enter a new trip name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#renameTripModal').on('shown.bs.modal', function() {
+            $('#tripNameInput').focus();
+        });
+    });
+</script>

@@ -86,5 +86,16 @@ router.get('/:tripID/points/graph', (req, res, next) => {
     });
 });
 
+router.post('/:tripID/rename', (req, res, next) => {
+    let tripID = req.params.tripID;
+    getTrip(res, tripID, (trip) => {
+        trip.update({
+            tripName: req.body.tripName
+        }).then(() => {
+            res.redirect(`/trip/${tripID}/points`);
+        });
+    });
+});
+
 module.exports = router;
 
