@@ -13,6 +13,7 @@ const logger = require('../utils/debuglogger')(__filename);
 const config = require('config');
 const HandleRender = require('../utils/handlebar-renderer');
 const Trip = require('../db/models/Trip');
+const TripPoint = require('../db/models/TripPoint');
 const VTripPoint = require('../db/models/VTripPoint');
 
 const router = require('express').Router();
@@ -93,6 +94,22 @@ router.post('/:tripID/rename', (req, res, next) => {
             tripName: req.body.tripName
         }).then(() => {
             res.redirect(`/trip/${tripID}/points`);
+        });
+    });
+});
+
+router.post('/:tripID/delete', (req, res, next) => {
+    let tripID = req.params.tripID;
+    getTrip(res, tripID, (trip) => {
+        TripPoint.destroy({
+            where: {
+                tripID: tripID
+            }
+        }).then(() => {
+            trip.destroy()
+                .then(() => {
+                    res.redirect('/trip');
+                });
         });
     });
 });

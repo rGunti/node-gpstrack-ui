@@ -25,6 +25,13 @@
                         <span class="fa fa-fw fa-pencil"></span>
                         Rename Trip
                     </a>
+                    <a class="dropdown-item"
+                       data-toggle="modal"
+                       data-target="#deleteTripModal"
+                       href="#deleteTripModal">
+                        <span class="fa fa-fw fa-trash"></span>
+                        Delete Trip
+                    </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="./download">
                         <span class="fa fa-fw fa-globe"></span>
@@ -100,6 +107,36 @@
         </div>
     </div>
 </div>
+
+<!-- Modal "Delete Trip Name" -->
+<div class="modal fade"
+     id="deleteTripModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="deleteTripModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="renameTripModalLabel">Rename trip</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="/trip/{{data.trip.tripID}}/delete">
+                <div class="modal-body">
+                    Would you like to delete the following trip:
+                    <b>{{data.tripName}}</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
         $('#renameTripModal').on('shown.bs.modal', function() {
